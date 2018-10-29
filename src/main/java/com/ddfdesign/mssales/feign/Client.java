@@ -11,10 +11,13 @@ import java.util.List;
 
 @FeignClient(name = "clients-ms")
 public interface Client {
-    @RequestMapping(value = "clientOne/{idClient}", method = RequestMethod.GET)
-    public ClientDTO getClientByIdClientOne(@PathVariable("idClient") Long idClient);
+    @RequestMapping(value = "clientOne/{dni}", method = RequestMethod.GET)
+    public List<ClientDTO> getClientByDniOne(@PathVariable("dni") String dni);
 
     @RequestMapping(value = "clientList", method = RequestMethod.GET)
     public List<ClientDTO> getAllClientsList();
+
+    @RequestMapping(value = "clientClient/{idClient}", method = RequestMethod.GET)
+    public ClientDTO getClientByIdOne(@PathVariable("idClient") Long idClient);
 }
 

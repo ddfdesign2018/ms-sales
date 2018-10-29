@@ -53,6 +53,13 @@ public class GestionSales implements IGestionSales {
             return null;
     }
 
+    /**
+     * Antes de crear el sale se comprueba que el cliente que se pasa existe en la tabla clients a través de una consulta
+     * por feign al microservicio clients-ms
+     * @param saleDTO
+     * @return
+     */
+    //TODO implementar la llamada a client para actualizar el campo last_buy
     @Override
     public SaleDTO createSaleById(SaleDTO saleDTO){
         Sale sale = new Sale(
@@ -61,16 +68,20 @@ public class GestionSales implements IGestionSales {
                 saleDTO.getDate(),
                 saleDTO.getClient()
         );
-        /*System.out.println("ID Cliente desde Sale :" + client.getClientByIdClientOne(saleDTO.getClient()).getId());
-        if (client.getClientByIdClientOne(saleDTO.getClient())== null)
+        Long aux = saleDTO.getClient();
+        if (client.getClientByIdOne(aux)==null) {
+            System.out.println("No existe el cliente y no se puede crear el sale");
             return null;
-            */
-        Sale resultado = iSalesRepository.save(sale);
-        return new SaleDTO(resultado.getId(),
-                resultado.getAmount(),
-                resultado.getDate(),
-                resultado.getClient()
-        );
+        }
+        else {
+            System.out.println("El cliente existe y se puede crear el sale" + client.getClientByIdOne(aux).getDni());
+            Sale resultado = iSalesRepository.save(sale);
+            return new SaleDTO(resultado.getId(),
+                    resultado.getAmount(),
+                    resultado.getDate(),
+                    resultado.getClient()
+            );
+        }
     }
 
     @Override

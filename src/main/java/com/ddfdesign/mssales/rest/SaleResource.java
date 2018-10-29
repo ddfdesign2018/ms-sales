@@ -50,7 +50,13 @@ public class SaleResource {
     @RequestMapping(value = "sale", method = RequestMethod.POST)
     public ResponseEntity<Void> createSale(@RequestBody SaleDTO saleDTO) {
         SaleDTO resultado = iGestionSales.createSaleById(saleDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        if (resultado!=null) {
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @RequestMapping(value = "sale/{idSale}", method = RequestMethod.DELETE)
